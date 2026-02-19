@@ -8,8 +8,8 @@ RUN apt-get update
 RUN apt-get install -y python3 build-essential curl
 
 # Create directory for the Ziti BrowZer Bootstrapper, and explicitly set the owner of that new directory to the node user
-RUN mkdir /home/node/ziti-browzer-bootstrapper
-WORKDIR /home/node/ziti-browzer-bootstrapper
+RUN mkdir /home/node/zt-browzer-bootstrapper
+WORKDIR /home/node/zt-browzer-bootstrapper
 
 # Prepare for dependencies installation
 COPY --chown=node:node package.json ./
@@ -34,12 +34,12 @@ FROM node:22-slim
 
 RUN apt-get update && apt-get install -y curl
 
-WORKDIR /home/node/ziti-browzer-bootstrapper
+WORKDIR /home/node/zt-browzer-bootstrapper
 
 # Copy installed node_modules from build stage
-COPY --from=build /home/node/ziti-browzer-bootstrapper /home/node/ziti-browzer-bootstrapper
+COPY --from=build /home/node/zt-browzer-bootstrapper /home/node/zt-browzer-bootstrapper
 
-RUN chown -R node:node /home/node/ziti-browzer-bootstrapper
+RUN chown -R node:node /home/node/zt-browzer-bootstrapper
 USER node
 
 # Expose the Ziti BrowZer Bootstrapper for traffic to be proxied (8000) and the
@@ -49,6 +49,6 @@ EXPOSE 8443
 
 # Put the Ziti BrowZer Bootstrapper on path for zha-docker-entrypoint
 ENV PATH=/home/node/bin:$PATH
-ENTRYPOINT ["/home/node/ziti-browzer-bootstrapper/zha-docker-entrypoint"]
+ENTRYPOINT ["/home/node/zt-browzer-bootstrapper/zha-docker-entrypoint"]
 
-# CMD ["node index.js > ./log/ziti-browzer-bootstrapper.log > 2&1"]
+# CMD ["node index.js > ./log/zt-browzer-bootstrapper.log > 2&1"]

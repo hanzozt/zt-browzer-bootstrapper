@@ -76,9 +76,9 @@ jobs:
           push: true
           platforms: ${{ env.TARGET_PLATFORMS }}
           tags: |
-            ghcr.io/hanzozt/ziti-browzer-bootstrapper:${{ github.run_number }}
-            ghcr.io/hanzozt/ziti-browzer-bootstrapper:latest
-            ghcr.io/hanzozt/ziti-browzer-bootstrapper:${{ steps.extract_version_number.outputs.version_number }}
+            ghcr.io/hanzozt/zt-browzer-bootstrapper:${{ github.run_number }}
+            ghcr.io/hanzozt/zt-browzer-bootstrapper:latest
+            ghcr.io/hanzozt/zt-browzer-bootstrapper:${{ steps.extract_version_number.outputs.version_number }}
         if: |
           steps.extract_branch.outputs.branch == 'main'
 
@@ -89,8 +89,8 @@ jobs:
           push: true
           platforms: ${{ env.TARGET_PLATFORMS }}
           tags: |
-            ghcr.io/hanzozt/ziti-browzer-bootstrapper:${{ github.run_number }}
-            ghcr.io/hanzozt/ziti-browzer-bootstrapper:PR${{ steps.extract_pr_number.outputs.pr_number }}.${{ github.run_number }}
+            ghcr.io/hanzozt/zt-browzer-bootstrapper:${{ github.run_number }}
+            ghcr.io/hanzozt/zt-browzer-bootstrapper:PR${{ steps.extract_pr_number.outputs.pr_number }}.${{ github.run_number }}
         if: |
           steps.extract_branch.outputs.branch != 'main'
           

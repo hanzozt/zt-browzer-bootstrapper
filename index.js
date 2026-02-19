@@ -149,16 +149,16 @@ if (browzer_bootstrapper_scheme === 'https') {
  
 var browzer_bootstrapper_host =     env('ZITI_BROWZER_BOOTSTRAPPER_HOST')
 
-var ziti_controller_host =          env('ZITI_CONTROLLER_HOST')
-if (ziti_controller_host === browzer_bootstrapper_host) { throw new Error('ZITI_CONTROLLER_HOST value and ZITI_BROWZER_BOOTSTRAPPER_HOST value cannot be the same'); }
-var ziti_controller_port =          env('ZITI_CONTROLLER_PORT')
+var zt_controller_host =          env('ZITI_CONTROLLER_HOST')
+if (zt_controller_host === browzer_bootstrapper_host) { throw new Error('ZITI_CONTROLLER_HOST value and ZITI_BROWZER_BOOTSTRAPPER_HOST value cannot be the same'); }
+var zt_controller_port =          env('ZITI_CONTROLLER_PORT')
 
-var zbr_src = `${browzer_bootstrapper_host}/ziti-browzer-runtime.js`;
+var zbr_src = `${browzer_bootstrapper_host}/zt-browzer-runtime.js`;
 
 var browzer_bootstrapper_listen_port = env('ZITI_BROWZER_BOOTSTRAPPER_LISTEN_PORT')
 
-var ziti_browzer_bootstrapper_loglevel = env('ZITI_BROWZER_BOOTSTRAPPER_LOGLEVEL')
-ziti_browzer_bootstrapper_loglevel = ziti_browzer_bootstrapper_loglevel.toLowerCase();
+var zt_browzer_bootstrapper_loglevel = env('ZITI_BROWZER_BOOTSTRAPPER_LOGLEVEL')
+zt_browzer_bootstrapper_loglevel = zt_browzer_bootstrapper_loglevel.toLowerCase();
 
 
 /** --------------------------------------------------------------------------------------------------
@@ -191,7 +191,7 @@ const createLogger = () => {
     }
 
     var logger = winston.createLogger({
-        level: ziti_browzer_bootstrapper_loglevel,
+        level: zt_browzer_bootstrapper_loglevel,
         format: combine(
             splat(),
             errors({ stack: true }),
@@ -225,7 +225,7 @@ const startBootstrapper =  async ( logger ) => {
 
     /** --------------------------------------------------------------------------------------------------
      *  Dynamically modify the proxied site's <head> element as we stream it back to the browser.  We will:
-     *  1) inject the zitiConfig needed by the SDK
+     *  1) inject the ztConfig needed by the SDK
      *  2) inject the Ziti browZer Runtime
      */
     var headselect = {};
@@ -250,25 +250,25 @@ const startBootstrapper =  async ( logger ) => {
         // Inject the Ziti browZer Runtime at the front of <head> element so we are prepared to intercept as soon as possible over on the browser
         let zbrSrc;
         if (browzer_load_balancer) {
-            zbrSrc = `https://${req.ziti_vhost}:${browzer_load_balancer_port}/${common.getZBRname()}`;
+            zbrSrc = `https://${req.zt_vhost}:${browzer_load_balancer_port}/${common.getZBRname()}`;
             if (env('ZITI_BROWZER_BOOTSTRAPPER_WILDCARD_VHOSTS')) {
-                zbrSrc = `https://${req.ziti_vhost}.${ common.trimFirstSection( env('ZITI_BROWZER_LOAD_BALANCER_HOST') )}:${browzer_load_balancer_port}/${common.getZBRname()}`;
+                zbrSrc = `https://${req.zt_vhost}.${ common.trimFirstSection( env('ZITI_BROWZER_LOAD_BALANCER_HOST') )}:${browzer_load_balancer_port}/${common.getZBRname()}`;
             }
         } else {
             
             if (env('ZITI_BROWZER_BOOTSTRAPPER_WILDCARD_VHOSTS')) {
-                zbrSrc = `${req.ziti_browzer_bootstrapper_scheme}://${req.ziti_vhost}.${ common.trimFirstSection( env('ZITI_BROWZER_BOOTSTRAPPER_HOST') )}:${browzer_bootstrapper_listen_port}/${common.getZBRname()}`;
+                zbrSrc = `${req.zt_browzer_bootstrapper_scheme}://${req.zt_vhost}.${ common.trimFirstSection( env('ZITI_BROWZER_BOOTSTRAPPER_HOST') )}:${browzer_bootstrapper_listen_port}/${common.getZBRname()}`;
             } else {
-                zbrSrc = `${req.ziti_browzer_bootstrapper_scheme}://${req.ziti_vhost}:${browzer_bootstrapper_listen_port}/${common.getZBRname()}`;
+                zbrSrc = `${req.zt_browzer_bootstrapper_scheme}://${req.zt_vhost}:${browzer_bootstrapper_listen_port}/${common.getZBRname()}`;
             }
         }
         let thirdPartyHTML = '';
-        let ziti_inject_html = `
+        let zt_inject_html = `
 ${thirdPartyHTML}
 <!-- load Ziti browZer Runtime -->
-<script id="from-ziti-browzer-bootstrapper" type="text/javascript" src="${zbrSrc}"></script>
+<script id="from-zt-browzer-bootstrapper" type="text/javascript" src="${zbrSrc}"></script>
 `;
-        node.ws.write( ziti_inject_html );
+        node.ws.write( zt_inject_html );
 
         // Read the node and put it back into our write stream.
         node.rs.pipe(node.ws, {});	
@@ -349,17 +349,17 @@ ${thirdPartyHTML}
     
     if (!skip_controller_cert_check) {
 
-        logger.info({message: 'contacting specified controller', host: ziti_controller_host, port: ziti_controller_port});
+        logger.info({message: 'contacting specified controller', host: zt_controller_host, port: zt_controller_port});
 
         const request = https.request({
-            hostname: ziti_controller_host,
-            port: ziti_controller_port,
+            hostname: zt_controller_host,
+            port: zt_controller_port,
             path: '/version',
             method: 'GET',
             timeout: 3000,
         }, function(res) {
             if (res.statusCode !== 200) {
-                logger.error({message: 'cannot contact specified controller', statusCode: res.statusCode, controllerHost: ziti_controller_host, controllerPort: ziti_controller_port});
+                logger.error({message: 'cannot contact specified controller', statusCode: res.statusCode, controllerHost: zt_controller_host, controllerPort: zt_controller_port});
                 process.exit(-1);
             }
             res.setEncoding('utf8');
@@ -381,7 +381,7 @@ ${thirdPartyHTML}
         }).end();
         request.on('timeout', () => {
             request.destroy();
-            logger.error({message: 'timeout attempting to contact specified controller', controllerHost: ziti_controller_host, controllerPort: ziti_controller_port});
+            logger.error({message: 'timeout attempting to contact specified controller', controllerHost: zt_controller_host, controllerPort: zt_controller_port});
             process.exit(-1);
         });
 
@@ -394,7 +394,7 @@ ${thirdPartyHTML}
 
         var options = {        
             hostname: 'api.github.com',
-            path: '/orgs/hanzozt/packages/container/ziti-browzer-bootstrapper/versions',
+            path: '/orgs/hanzozt/packages/container/zt-browzer-bootstrapper/versions',
             method: 'GET',
             port: 443,
             headers: {
@@ -544,26 +544,26 @@ ${thirdPartyHTML}
 
             var target = target_app_to_target.get(target_app);
 
-            req.ziti_vhost           = target.vhost;
-            req.ziti_target_service  = target.service;
+            req.zt_vhost           = target.vhost;
+            req.zt_target_service  = target.service;
             if (typeof target.path === 'undefined') { 
                 target.path = '/';
             }
-            req.ziti_target_path     = target.path;
+            req.zt_target_path     = target.path;
             if (typeof target.scheme === 'undefined') { 
                 target.path = 'http';
             }
-            req.ziti_target_scheme   = target.scheme;
+            req.zt_target_scheme   = target.scheme;
             if (browzer_load_balancer) {
-                req.ziti_browzer_bootstrapper_scheme = 'https';
+                req.zt_browzer_bootstrapper_scheme = 'https';
             } else {
-                req.ziti_browzer_bootstrapper_scheme = browzer_bootstrapper_scheme;
+                req.zt_browzer_bootstrapper_scheme = browzer_bootstrapper_scheme;
             }
         
-            req.ziti_idp_issuer_base_url = target.idp_issuer_base_url;
-            req.ziti_idp_client_id   = target.idp_client_id;
-            req.ziti_idp_authorization_endpoint_parms   = target.idp_authorization_endpoint_parms;
-            req.ziti_idp_authorization_scope   = target.idp_authorization_scope;
+            req.zt_idp_issuer_base_url = target.idp_issuer_base_url;
+            req.zt_idp_client_id   = target.idp_client_id;
+            req.zt_idp_authorization_endpoint_parms   = target.idp_authorization_endpoint_parms;
+            req.zt_idp_authorization_scope   = target.idp_authorization_scope;
 
             next();
         });  
@@ -623,7 +623,7 @@ ${thirdPartyHTML}
         next(err);
     });
 
-    app.get('/ziti-browzer-latest-release-version', function(req, res, next){
+    app.get('/zt-browzer-latest-release-version', function(req, res, next){
 
         let data = {
             latestBrowZerReleaseVersion: getLatestBrowZerReleaseVersion()
@@ -739,26 +739,26 @@ ${thirdPartyHTML}
                 var target_app = target_apps.get('*');
                 var target = target_app_to_target.get(target_app);
     
-                req.ziti_vhost           = req.vhost[0];
-                req.ziti_target_service  = req.vhost[0];
+                req.zt_vhost           = req.vhost[0];
+                req.zt_target_service  = req.vhost[0];
                 if (typeof target.path === 'undefined') { 
                     target.path = '/';
                 }
-                req.ziti_target_path     = target.path;
+                req.zt_target_path     = target.path;
                 if (typeof target.scheme === 'undefined') { 
                     target.path = 'http';
                 }
-                req.ziti_target_scheme   = target.scheme;
+                req.zt_target_scheme   = target.scheme;
                 if (browzer_load_balancer) {
-                    req.ziti_browzer_bootstrapper_scheme = 'https';
+                    req.zt_browzer_bootstrapper_scheme = 'https';
                 } else {
-                    req.ziti_browzer_bootstrapper_scheme = browzer_bootstrapper_scheme;
+                    req.zt_browzer_bootstrapper_scheme = browzer_bootstrapper_scheme;
                 }
             
-                req.ziti_idp_issuer_base_url = target.idp_issuer_base_url;
-                req.ziti_idp_client_id   = target.idp_client_id;
-                req.ziti_idp_authorization_endpoint_parms   = target.idp_authorization_endpoint_parms;
-                req.ziti_idp_authorization_scope   = target.idp_authorization_scope;
+                req.zt_idp_issuer_base_url = target.idp_issuer_base_url;
+                req.zt_idp_client_id   = target.idp_client_id;
+                req.zt_idp_authorization_endpoint_parms   = target.idp_authorization_endpoint_parms;
+                req.zt_idp_authorization_scope   = target.idp_authorization_scope;
     
                 next();
     
@@ -918,8 +918,8 @@ ${thirdPartyHTML}
                 let response = 
 `HTTP/1.1 200 OK
 Content-Type: text/plain
-x-ziti-browzer-bootstrapper: ${pjson.version}
-Server: ziti-browzer-bootstrapper/v${pjson.version}
+x-zt-browzer-bootstrapper: ${pjson.version}
+Server: zt-browzer-bootstrapper/v${pjson.version}
 
 Hello, from Hanzo ZT BrowZer v${pjson.version} !
 `
@@ -957,7 +957,7 @@ Hello, from Hanzo ZT BrowZer v${pjson.version} !
 
     /** --------------------------------------------------------------------------------------------------
      *  If we are configured to do machine-to-machine (M2M) OIDC auth, then instantiate an initial
-     *  zitiContext.  The zitiContext will be used to look up zrok 'private' shares (Services) from
+     *  ztContext.  The ztContext will be used to look up zrok 'private' shares (Services) from
      *  the Controller.  The response from the Controller will be used to determine which wildcard
      *  vhost HTTP Requests should be honored, and which should be 404'd
      */
@@ -1005,7 +1005,7 @@ const main = async () => {
 
     logger = createLogger();
 
-    logger.info({message: 'ziti-browzer-bootstrapper initializing'});
+    logger.info({message: 'zt-browzer-bootstrapper initializing'});
 
     Validator.prototype.customFormats.obsoleteIdPConfig = function(input) {
         if (isEqual(input, 'idp_type') || isEqual(input, 'idp_realm')) {

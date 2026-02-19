@@ -1,5 +1,5 @@
 {
-  "name": "ziti-browzer-bootstrapper",
+  "name": "zt-browzer-bootstrapper",
   "version": "0.90.0",
   "compatibleControllerVersion": ">=0.27.9",
   "description": "Ziti BrowZer Bootstrapper -- providing Ziti network access into Dark web server",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hanzozt/ziti-browzer-bootstrapper.git"
+    "url": "https://github.com/hanzozt/zt-browzer-bootstrapper.git"
   },
   "author": {
     "name": "NetFoundry",
@@ -19,9 +19,9 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@hanzozt/ziti-browzer-edge-client": "^0.6.2",
-    "@hanzozt/ziti-browzer-runtime": "^0.119.0",
-    "@hanzozt/ziti-browzer-sw": "^0.84.0",
+    "@hanzozt/zt-browzer-edge-client": "^0.6.2",
+    "@hanzozt/zt-browzer-runtime": "^0.119.0",
+    "@hanzozt/zt-browzer-sw": "^0.84.0",
     "acme-http-01-standalone": "^3.0.5",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",

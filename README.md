@@ -1,18 +1,18 @@
-`ziti-browzer-bootstrapper`
+`zt-browzer-bootstrapper`
 =====================
 
 A NodeJS-based server responsible for securely bootstrapping browser-based web applications over an
 [Hanzo ZT Overlay Network](https://hanzozt.dev/docs/reference/glossary/#network-overlay-overlay)
 
-<img src="https://raw.githubusercontent.com/hanzozt/branding/main/images/logos/ziti-dark.svg" width="400" />
+<img src="https://raw.githubusercontent.com/hanzozt/branding/main/images/logos/zt-dark.svg" width="400" />
 
 Learn about Hanzo ZT at [hanzozt.dev](https://hanzozt.dev)
 
 
-[![Build](https://github.com/hanzozt/ziti-browzer-bootstrapper/workflows/Build/badge.svg?branch=main)]()
-[![Issues](https://img.shields.io/github/issues-raw/hanzozt/ziti-browzer-bootstrapper)]()
+[![Build](https://github.com/hanzozt/zt-browzer-bootstrapper/workflows/Build/badge.svg?branch=main)]()
+[![Issues](https://img.shields.io/github/issues-raw/hanzozt/zt-browzer-bootstrapper)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![LOC](https://img.shields.io/tokei/lines/github/hanzozt/ziti-browzer-bootstrapper)]()
+[![LOC](https://img.shields.io/tokei/lines/github/hanzozt/zt-browzer-bootstrapper)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=rounded)](CONTRIBUTING.md)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
@@ -58,7 +58,7 @@ you have configured the overlay with "alternative server certs" as outlined
 ### third-party verifiable, wildcard certificate
 BrowZer operates in your browser, having a PKI that is not self-signed make using BrowZer much easier. LetsEncrypt
 makes obtaining certificates attainable for nearly everyone. It is easier to procure a wildcard certificate and use it
-for not only your Hanzo ZT overlay network, but also for the ziti-browzer-bootstrapper as well.
+for not only your Hanzo ZT overlay network, but also for the zt-browzer-bootstrapper as well.
 
 ### OIDC Provider
 
@@ -92,7 +92,7 @@ is different. It's up to you to understand what claim you want to map. As anothe
 will see the JWT bearer token returned from Auth0 will contain a claim named "email". When creating the `ext-jwt-signer`,
 this claim is referenced as the 'claims-property'.
 
-Here's a very simple set of steps that illustrates how you might use the `ziti` CLI with Auth0 to create an external
+Here's a very simple set of steps that illustrates how you might use the `zt` CLI with Auth0 to create an external
 jwt signer in your Hanzo ZT overlay (see the official doc site for more information) This example will not work for you as-is,
 you'll need to supply the proper inputs. The example is for illustration only:
 
@@ -106,7 +106,7 @@ jwks=$(curl -s ${ZITI_BROWZER_OIDC_URL}/.well-known/openid-configuration | jq -r
 echo "OIDC issuer   : $issuer"
 echo "OIDC jwks url : $jwks"
 
-ext_jwt_signer=$(ziti edge create ext-jwt-signer "browzer-auth0-ext-jwt-signer" "${issuer}" --jwks-endpoint "${jwks}" --audience "${ZITI_BROWZER_CLIENT_ID}" --claims-property ${ZITI_BROWZER_FIELD})
+ext_jwt_signer=$(zt edge create ext-jwt-signer "browzer-auth0-ext-jwt-signer" "${issuer}" --jwks-endpoint "${jwks}" --audience "${ZITI_BROWZER_CLIENT_ID}" --claims-property ${ZITI_BROWZER_FIELD})
 echo "ext jwt signer id: $ext_jwt_signer"
 ```
 
@@ -117,7 +117,7 @@ If you have run the command above, you will be able to create and echo the auth-
 one (see the official doc site for more information):
 
 ```bash
-auth_policy=$(ziti edge create auth-policy browzer-auth0-auth-policy --primary-ext-jwt-allowed --primary-ext-jwt-allowed-signers ${ext_jwt_signer})
+auth_policy=$(zt edge create auth-policy browzer-auth0-auth-policy --primary-ext-jwt-allowed --primary-ext-jwt-allowed-signers ${ext_jwt_signer})
 echo "auth policy id: $auth_policy"
 ```
 
@@ -127,19 +127,19 @@ Once the external signer and auth policy are in place, now you need to associate
 For example, if you ran the auth policy command shown above, you could do something as shown:
 
 ```bash
-id=some.email@address.ziti
-ziti edge create identity user "${id}" --auth-policy ${auth_policy} --external-id "${id}" -a browzer.enabled.identities
+id=some.email@address.zt
+zt edge create identity user "${id}" --auth-policy ${auth_policy} --external-id "${id}" -a browzer.enabled.identities
 ```
 
-This creates an association in Hanzo ZT mapping an identity with "some.email.@address.ziti" to this Hanzo ZT identity.
+This creates an association in Hanzo ZT mapping an identity with "some.email.@address.zt" to this Hanzo ZT identity.
 Continuing with Auth0 as the OIDC provider, when a user tries to use a service protected with BrowZer, after authenticating
-to Auth0, Auth0 is expected to return a bearer token with a field named email, containing "some.email@address.ziti". (the
+to Auth0, Auth0 is expected to return a bearer token with a field named email, containing "some.email@address.zt". (the
 _actual_ email of the user should be returned, of course). If that's the case, now this user will be authorized to access
 the service.
 
 ## Installing/Running
 
-Once the prerequisites are met, starting the `ziti-browzer-bootstrapper` should be relatively simple. To start the bootstrapper you will
+Once the prerequisites are met, starting the `zt-browzer-bootstrapper` should be relatively simple. To start the bootstrapper you will
 be expected to provide the following environment variables before starting the service. If you are running with NodeJS,
 you'll set these as environment variables. If you're running via docker, you can either use a .env file or you can set
 environment variables.
@@ -150,13 +150,13 @@ environment variables.
 * ZITI_BROWZER_RUNTIME_LOGLEVEL: the log level for the Ziti BrowZer Runtime (ZBR) to use
 * ZITI_CONTROLLER_HOST: the "alternative" address for the Hanzo ZT controller
 * ZITI_CONTROLLER_PORT: the port to find the Hanzo ZT controller at
-* ZITI_BROWZER_BOOTSTRAPPER_LOGLEVEL: the log level for the ziti-browzer-bootstrapper to log at
-* ZITI_BROWZER_BOOTSTRAPPER_HOST: the address the ziti-browzer-bootstrapper is available at
-* ZITI_BROWZER_BOOTSTRAPPER_LISTEN_PORT: the port the ziti-browzer-bootstrapper is available at
-* ZITI_BROWZER_BOOTSTRAPPER_SCHEME: the scheme to use to access the ziti-browzer-bootstrapper (https by default)
-* ZITI_BROWZER_BOOTSTRAPPER_CERTIFICATE_PATH: the path to the certificate the ziti-browzer-bootstrapper presents to clients
+* ZITI_BROWZER_BOOTSTRAPPER_LOGLEVEL: the log level for the zt-browzer-bootstrapper to log at
+* ZITI_BROWZER_BOOTSTRAPPER_HOST: the address the zt-browzer-bootstrapper is available at
+* ZITI_BROWZER_BOOTSTRAPPER_LISTEN_PORT: the port the zt-browzer-bootstrapper is available at
+* ZITI_BROWZER_BOOTSTRAPPER_SCHEME: the scheme to use to access the zt-browzer-bootstrapper (https by default)
+* ZITI_BROWZER_BOOTSTRAPPER_CERTIFICATE_PATH: the path to the certificate the zt-browzer-bootstrapper presents to clients
 * ZITI_BROWZER_BOOTSTRAPPER_KEY_PATH: the associated key for the ZITI_BROWZER_BOOTSTRAPPER_CERTIFICATE_PATH
-* ZITI_BROWZER_LOAD_BALANCER_HOST: the address of the load balancer (if an optional LB does TLS-termination in front of the ziti-browzer-bootstrapper)
+* ZITI_BROWZER_LOAD_BALANCER_HOST: the address of the load balancer (if an optional LB does TLS-termination in front of the zt-browzer-bootstrapper)
 * ZITI_BROWZER_LOAD_BALANCER_PORT: the port the load balancer listens on (443 by default)
 * ZITI_BROWZER_BOOTSTRAPPER_TARGETS: __more on this below__
 
@@ -177,7 +177,7 @@ environment variables.
 
 ### ZITI_BROWZER_BOOTSTRAPPER_TARGETS
 
-The `ZITI_BROWZER_BOOTSTRAPPER_TARGETS` environment variable is a json block that specifies the configuration of services the `ziti-browzer-bootstrapper`
+The `ZITI_BROWZER_BOOTSTRAPPER_TARGETS` environment variable is a json block that specifies the configuration of services the `zt-browzer-bootstrapper`
 should support. The json is a single entry named "targetArray" which is an array of services to configure with one entry
 per service. An example json block would look like the following:
 ```json
@@ -195,18 +195,18 @@ per service. An example json block would look like the following:
 }
 ```
 
-### Starting the ziti-browzer-bootstrapper
+### Starting the zt-browzer-bootstrapper
 
-Once you have set the required environment variables you can start the `ziti-browzer-bootstrapper` directly by running `yarn build`
+Once you have set the required environment variables you can start the `zt-browzer-bootstrapper` directly by running `yarn build`
 and then running:
 ```bash
 NODE_EXTRA_CA_CERTS=node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem node index.js
 ```
 
-To start the `ziti-browzer-bootstrapper` from docker you can issue a command, using the environment variables. For example:
+To start the `zt-browzer-bootstrapper` from docker you can issue a command, using the environment variables. For example:
 ```bash
 docker run
---name ziti-browzer-bootstrapper
+--name zt-browzer-bootstrapper
 --rm -v /etc/letsencrypt:/etc/letsencrypt
 --user 1000:2171
 -p 1443:1443
@@ -214,17 +214,17 @@ docker run
 -e ZITI_BROWZER_BOOTSTRAPPER_LOGLEVEL=debug
 -e ZITI_BROWZER_RUNTIME_LOGLEVEL=debug
 -e ZITI_BROWZER_RUNTIME_HOTKEY=alt+F12
--e ZITI_CONTROLLER_HOST=ctrl.zititv.demo.hanzozt.org
+-e ZITI_CONTROLLER_HOST=ctrl.zttv.demo.hanzozt.org
 -e ZITI_CONTROLLER_PORT=1280
--e ZITI_BROWZER_BOOTSTRAPPER_HOST=browzer.zititv.demo.hanzozt.org
+-e ZITI_BROWZER_BOOTSTRAPPER_HOST=browzer.zttv.demo.hanzozt.org
 -e ZITI_BROWZER_BOOTSTRAPPER_SCHEME=https
--e ZITI_BROWZER_BOOTSTRAPPER_CERTIFICATE_PATH=/etc/letsencrypt/live/zititv.demo.hanzozt.org/fullchain.pem
--e ZITI_BROWZER_BOOTSTRAPPER_KEY_PATH=/etc/letsencrypt/live/zititv.demo.hanzozt.org/privkey.pem
+-e ZITI_BROWZER_BOOTSTRAPPER_CERTIFICATE_PATH=/etc/letsencrypt/live/zttv.demo.hanzozt.org/fullchain.pem
+-e ZITI_BROWZER_BOOTSTRAPPER_KEY_PATH=/etc/letsencrypt/live/zttv.demo.hanzozt.org/privkey.pem
 -e ZITI_BROWZER_BOOTSTRAPPER_LISTEN_PORT=1443
 -e ZITI_BROWZER_BOOTSTRAPPER_TARGETS=  {
     "targetArray": [
       {
-        "vhost": "docker-whale.zititv.demo.hanzozt.org",
+        "vhost": "docker-whale.zttv.demo.hanzozt.org",
         "service": "docker.whale",
         "path": "/",
         "scheme": "http",
@@ -233,11 +233,11 @@ docker run
       }
     ]
   }\
-  ghcr.io/hanzozt/ziti-browzer-bootstrapper:pr177.432
+  ghcr.io/hanzozt/zt-browzer-bootstrapper:pr177.432
 ```
 
 
-[npm-image]: https://flat.badgen.net/npm/v/@hanzozt/ziti-sdk-js
-[npm-url]: https://www.npmjs.com/package/@hanzozt/ziti-sdk-js
-[install-size-image]: https://flat.badgen.net/packagephobia/install/@hanzozt/ziti-sdk-js
-[install-size-url]: https://packagephobia.now.sh/result?p=@hanzozt/ziti-sdk-js
+[npm-image]: https://flat.badgen.net/npm/v/@hanzozt/zt-sdk-js
+[npm-url]: https://www.npmjs.com/package/@hanzozt/zt-sdk-js
+[install-size-image]: https://flat.badgen.net/packagephobia/install/@hanzozt/zt-sdk-js
+[install-size-url]: https://packagephobia.now.sh/result?p=@hanzozt/zt-sdk-js
