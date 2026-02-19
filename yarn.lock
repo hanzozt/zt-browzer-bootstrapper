@@ -347,9 +347,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openziti/libcrypto-js@npm:0.24.0":
+"@hanzozt/libcrypto-js@npm:0.24.0":
   version: 0.24.0
-  resolution: "@openziti/libcrypto-js@npm:0.24.0"
+  resolution: "@hanzozt/libcrypto-js@npm:0.24.0"
   dependencies:
     "@types/emscripten": "npm:^1.39.6"
     "@wasmer/wasi": "npm:^1.0.2"
@@ -357,12 +357,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openziti/ziti-browzer-core@npm:^0.68.0":
+"@hanzozt/ziti-browzer-core@npm:^0.68.0":
   version: 0.68.0
-  resolution: "@openziti/ziti-browzer-core@npm:0.68.0"
+  resolution: "@hanzozt/ziti-browzer-core@npm:0.68.0"
   dependencies:
-    "@openziti/libcrypto-js": "npm:0.24.0"
-    "@openziti/ziti-browzer-edge-client": "npm:^0.7.0"
+    "@hanzozt/libcrypto-js": "npm:0.24.0"
+    "@hanzozt/ziti-browzer-edge-client": "npm:^0.7.0"
     asn1js: "npm:^3.0.5"
     assert: "npm:^2.0.0"
     async-mutex: "npm:^0.5.0"
@@ -404,31 +404,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openziti/ziti-browzer-edge-client@npm:^0.6.2":
+"@hanzozt/ziti-browzer-edge-client@npm:^0.6.2":
   version: 0.6.2
-  resolution: "@openziti/ziti-browzer-edge-client@npm:0.6.2"
+  resolution: "@hanzozt/ziti-browzer-edge-client@npm:0.6.2"
   dependencies:
     superagent: "npm:^7.1.3"
   checksum: 203f492e2b1212a055e5bb2f674dcda4fc23630d2e056db63b0bb28e4c1d18d40f24e55f82c109df2e48cfa5e2b54a1360fe6c22e36659d778a2fd12932bc1c7
   languageName: node
   linkType: hard
 
-"@openziti/ziti-browzer-edge-client@npm:^0.7.0":
+"@hanzozt/ziti-browzer-edge-client@npm:^0.7.0":
   version: 0.7.0
-  resolution: "@openziti/ziti-browzer-edge-client@npm:0.7.0"
+  resolution: "@hanzozt/ziti-browzer-edge-client@npm:0.7.0"
   dependencies:
     superagent: "npm:^7.1.3"
   checksum: fbaf1ce2c5a68a62ba4281e0be4660f2cd5cae99ab69f5ce57b8aa995269aa0e876837ce7251982adeecd4b5c0d1e86531797d0f126629c824281b56bc82b3fe
   languageName: node
   linkType: hard
 
-"@openziti/ziti-browzer-runtime@npm:^0.119.0":
+"@hanzozt/ziti-browzer-runtime@npm:^0.119.0":
   version: 0.119.0
-  resolution: "@openziti/ziti-browzer-runtime@npm:0.119.0"
+  resolution: "@hanzozt/ziti-browzer-runtime@npm:0.119.0"
   dependencies:
     "@auth0/auth0-spa-js": "npm:^2.0.4"
     "@babel/runtime": "npm:^7.17.9"
-    "@openziti/ziti-browzer-core": "npm:^0.68.0"
+    "@hanzozt/ziti-browzer-core": "npm:^0.68.0"
     bowser: "npm:^2.11.0"
     cookie-interceptor: "npm:^1.0.0"
     core-js: "npm:^3.22.8"
@@ -452,11 +452,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openziti/ziti-browzer-sw-workbox-strategies@npm:^0.89.0":
+"@hanzozt/ziti-browzer-sw-workbox-strategies@npm:^0.89.0":
   version: 0.89.0
-  resolution: "@openziti/ziti-browzer-sw-workbox-strategies@npm:0.89.0"
+  resolution: "@hanzozt/ziti-browzer-sw-workbox-strategies@npm:0.89.0"
   dependencies:
-    "@openziti/ziti-browzer-core": "npm:^0.68.0"
+    "@hanzozt/ziti-browzer-core": "npm:^0.68.0"
     async-mutex: "npm:^0.5.0"
     cheerio: "npm:^1.0.0-rc.12"
     jwt-decode: "npm:^3.1.2"
@@ -469,11 +469,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openziti/ziti-browzer-sw@npm:^0.84.0":
+"@hanzozt/ziti-browzer-sw@npm:^0.84.0":
   version: 0.84.0
-  resolution: "@openziti/ziti-browzer-sw@npm:0.84.0"
+  resolution: "@hanzozt/ziti-browzer-sw@npm:0.84.0"
   dependencies:
-    "@openziti/ziti-browzer-sw-workbox-strategies": "npm:^0.89.0"
+    "@hanzozt/ziti-browzer-sw-workbox-strategies": "npm:^0.89.0"
     "@types/lodash-es": "npm:^4.17.6"
     workbox-core: "npm:^6.6.0"
     workbox-expiration: "npm:^6.6.0"
@@ -7267,9 +7267,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ziti-browzer-bootstrapper@workspace:."
   dependencies:
-    "@openziti/ziti-browzer-edge-client": "npm:^0.6.2"
-    "@openziti/ziti-browzer-runtime": "npm:^0.119.0"
-    "@openziti/ziti-browzer-sw": "npm:^0.84.0"
+    "@hanzozt/ziti-browzer-edge-client": "npm:^0.6.2"
+    "@hanzozt/ziti-browzer-runtime": "npm:^0.119.0"
+    "@hanzozt/ziti-browzer-sw": "npm:^0.84.0"
     acme-http-01-standalone: "npm:^3.0.5"
     ajv: "npm:^8.17.1"
     ajv-formats: "npm:^3.0.1"

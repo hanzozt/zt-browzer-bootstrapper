@@ -10,18 +10,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/openziti/ziti-browzer-bootstrapper.git"
+    "url": "https://github.com/hanzozt/ziti-browzer-bootstrapper.git"
   },
   "author": {
     "name": "NetFoundry",
     "url": "http://netfoundry.io",
-    "email": "openziti@netfoundry.io"
+    "email": "hanzozt@netfoundry.io"
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@openziti/ziti-browzer-edge-client": "^0.6.2",
-    "@openziti/ziti-browzer-runtime": "^0.119.0",
-    "@openziti/ziti-browzer-sw": "^0.84.0",
+    "@hanzozt/ziti-browzer-edge-client": "^0.6.2",
+    "@hanzozt/ziti-browzer-runtime": "^0.119.0",
+    "@hanzozt/ziti-browzer-sw": "^0.84.0",
     "acme-http-01-standalone": "^3.0.5",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",

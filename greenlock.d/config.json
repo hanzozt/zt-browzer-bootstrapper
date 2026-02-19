@@ -13,7 +13,7 @@
     "renewStagger": "3d",
     "accountKeyType": "EC-P256",
     "serverKeyType": "RSA-2048",
-    "subscriberEmail": "openziti@netfoundry.io"
+    "subscriberEmail": "hanzozt@netfoundry.io"
   },
   "sites": [
   ]

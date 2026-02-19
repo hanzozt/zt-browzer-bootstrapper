@@ -394,7 +394,7 @@ ${thirdPartyHTML}
 
         var options = {        
             hostname: 'api.github.com',
-            path: '/orgs/openziti/packages/container/ziti-browzer-bootstrapper/versions',
+            path: '/orgs/hanzozt/packages/container/ziti-browzer-bootstrapper/versions',
             method: 'GET',
             port: 443,
             headers: {
@@ -792,7 +792,7 @@ ${thirdPartyHTML}
 
                 let whitelabel = JSON.parse(env('ZITI_BROWZER_WHITELABEL'));
 
-                let footer = `<a href="https://openziti.io/docs/learn/quickstarts/browzer/"><strong>powered by ${whitelabel.branding.browZerName} v${pjson.version}</strong><img src="${whitelabel.branding.browZerButtonIconSvgUrl}" style="width: 2%;position: fixed;bottom: 15px;margin-left: 10px;"></a>`;
+                let footer = `<a href="https://hanzozt.dev/docs/learn/quickstarts/browzer/"><strong>powered by ${whitelabel.branding.browZerName} v${pjson.version}</strong><img src="${whitelabel.branding.browZerButtonIconSvgUrl}" style="width: 2%;position: fixed;bottom: 15px;margin-left: 10px;"></a>`;
 
                 if (isUndefined(data.error.browzer_error_data.myvar)) {
                     data.error.browzer_error_data.myvar = {type: 'zbr'}
@@ -921,7 +921,7 @@ Content-Type: text/plain
 x-ziti-browzer-bootstrapper: ${pjson.version}
 Server: ziti-browzer-bootstrapper/v${pjson.version}
 
-Hello, from OpenZiti BrowZer v${pjson.version} !
+Hello, from Hanzo ZT BrowZer v${pjson.version} !
 `
                 socket.write(response);
                 socket.end();

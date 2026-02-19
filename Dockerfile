@@ -1,7 +1,7 @@
 # Stage 1: Install dependencies
 FROM node:22-slim AS build
 
-LABEL maintainer="OpenZiti <openziti@netfoundry.io>"
+LABEL maintainer="Hanzo ZT <hanzozt@netfoundry.io>"
 
 # Install useful tools
 RUN apt-get update
